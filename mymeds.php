@@ -64,22 +64,81 @@ if ($_POST) {
 
 }
 
+if ($_GET) {
+
+
+        if ($_GET['have']) {
+      $last_ind_id = $database->insert("inventory",[
+        "qty" => 1,
+        "meds_id" => $_GET['have'],
+        "user_id" => $_SESSION['user']
+        ]);
+    } 
+
+        if ($_GET['plus']) {
+      $last_ind_id = $database->update("inventory",[
+          "qty[+]" => 1
+          ],[
+          "id" => $_GET['plus']
+
+        ]);
+    } 
+
+
+        if ($_GET['minus']) {
+      $last_ind_id = $database->update("inventory",[
+          "qty[-]" => 1
+          ],[
+          "id" => $_GET['minus']
+
+        ]);
+    } 
+
+
+        if ($_GET['del']) {
+      $deleted_rows = $database->delete("inventory",
+          ["id" => $_GET['del']]);
+    } 
+
+
+        if ($_GET['need']) {
+      $last_ind_id = $database->update("inventory",[
+          "need" => 1
+          ],[
+          "id" => $_GET['need']
+
+        ]);
+    } 
+
+        if ($_GET['noneed']) {
+      $last_ind_id = $database->update("inventory",[
+          "need" => 0
+          ],[
+          "id" => $_GET['noneed']
+
+        ]);
+    } 
+ } 
+
+
 
 
 // query to display data
 
-$meds = $database->select("meds",[
-	"[><]med_types" => ["med_types_id" => "id"]
-	],[
-	"meds.id",
-	"active_ingredient",
-	"name",
-	"type"
-	],[
-	"LIMIT" => 50	
-	]);
 
-$types = $database->select("med_types",["id","type"]);
+$inventory = $database->select("inventory",[
+  "[><]meds" => ["meds_id" => "id"]
+  ],[
+  "meds_id",
+  "inventory.id",
+  "qty",
+  "name",
+  "active_ingredient",
+  "dose",
+  "need"
+  ],[
+  "LIMIT" => 50 
+  ]);
 
 
 
@@ -103,8 +162,8 @@ $types = $database->select("med_types",["id","type"]);
           <ul class="nav navbar-nav">
           	<li><a href="dashboard.php">Dash</a></li>
             <li><a href="about.php">About</a></li>
-            <li class="active"><a href="meds.php">Meds</a></li>
-            <li><a href="mymeds.php">My Meds</a></li>
+            <li><a href="meds.php">Meds</a></li>
+            <li class="active"><a href="mymeds.php">My Meds</a></li>
             <li><a href="symps.php">Symptons</a></li>
             <li><a href="friends.php">Friends</a></li>
             <li><a href="search.php">Search</a></li>
@@ -125,57 +184,7 @@ $types = $database->select("med_types",["id","type"]);
 
 
 
-<div class="table-responsive">
 
-	<form action="meds.php" method="POST">
-			<input type="hidden" name="action" value="new_med">
-
-
-<div class="row">
-        <div class="col-md-4">
-
-        	<input type="text" name="name" class="form-control" placeholder="Commercial Name" aria-describedby="basic-addon1">
-        </div>
-
-        <div class="col-md-4">
-
-
-			<div class="form-group form-group-sm">
-					  <select class="form-control" id="sel1">
-					    <option>Type</option>
-					    <?php
-					    foreach ($types as $type) {
-					    echo "<option name=\"type\" value=\"".$type['id']."\">".$type['type']."</option>";
-					    }
-					    ?>
-				      </select>
-		    </div>
-		</div>
-
-        <div class="col-md-4">
-			<div class="input-group">
-				<input type="text" name="active_ingredient" class="form-control" placeholder="Active Ingredient" aria-describedby="basic-addon1">
-
-				<span class="input-group-btn">
-				<button class="btn btn-default" type="submit">Add</button>
-				</span> 
-			</div>
-		</div>
-
-
-      </div>
-
-	</form>
-
-
-
-                  		
-<!-- old text 
-
--->		
-
-
-</div>
 
 
             <table class="table table-striped">
@@ -184,39 +193,44 @@ $types = $database->select("med_types",["id","type"]);
 					
                 </tr>
                 <tr>
-                  <th>Name</th>
-                  <th>Type</th>
+                  <th>Med</th>
                   <th>Active Ingredient</th>
+                  <th>Dosage</th>
+                  <th>Need?</th>
+                  <th>Stock</th>
+                  <th>Del</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
               	<?php
-              	foreach ($meds as $med) {
+              	foreach ($inventory as $item) {
               		echo "<tr>";
-              		echo "<td>".$med["name"]."</td>";
-					echo "<td>".$med["type"]."</td>";
-              		echo "<td>".$med["active_ingredient"]."</td>";
-              		echo "<td>";
-              		echo "<a href=\"mymeds.php?have=".$med['id']."\">I Have this!</a>";	
-              		echo "</td>";
+                  echo "<td>".$item["name"]."</td>";
+                  echo "<td>".$item["active_ingredient"]."</td>";
+                  echo "<td>".$item["dose"]."</td>";
+                  echo "<td>";
+                  if ($item['need']) { 
+                     echo "<a href=\"mymeds.php?noneed=".$item['id']."\">Needed</a>";  
+                    }
+                  else {
+                     echo "<a href=\"mymeds.php?need=".$item['id']."\">Not Needed</a>";  
+                    }
+                  echo "</td><td>";                 
+                  echo "<a href=\"mymeds.php?minus=".$item['id']."\">-</a>"; 
+                  echo " | ".$item["qty"]." | ";
+                  echo "<a href=\"mymeds.php?plus=".$item['id']."\">+</a>"; 
+                  echo "</td><td>";                 
+                  echo "<a href=\"mymeds.php?del=".$item['id']."\">Del</a>"; 
+                  echo "</td>";
+
 					echo "</tr>";
               	}?>
               </tbody>
             </table>
 
 
-	<form action="meds.php" method="POST">
-			<input type="hidden" name="action" value="new_type">
-				<div class="input-group">
-				<input type="text" name="type_name" class="form-control" placeholder="New Med Type" aria-describedby="basic-addon1">
-				<span class="input-group-btn">
-				<button class="btn btn-default" type="submit">Add</button>
-				</span> 
-			</div>
 
-
-	</form>
 
     </div><!-- /.container -->
 
