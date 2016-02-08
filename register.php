@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Empresta em Miami</title>
+    <title>myMeds</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -48,7 +48,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.php">Empresta Miami</a>
+          <a class="navbar-brand" href="index.php">myMeds</a>
 
         </div>
         <div id="navbar" class="collapse navbar-collapse">

@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Empresta em Miami</title>
+    <title>myMeds</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -93,7 +93,7 @@ $c_friendships = $database->count("friendships");
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="dashboard.php">Empresta Miami</a>
+          <a class="navbar-brand" href="dashboard.php">myMeds</a>
 
         </div>
         <div id="navbar" class="collapse navbar-collapse">
@@ -102,7 +102,7 @@ $c_friendships = $database->count("friendships");
             <li><a href="about.php">About</a></li>
             <li><a href="meds.php">Meds</a></li>
             <li><a href="mymeds.php">My Meds</a></li>
-            <li><a href="symps.php">Symptons</a></li>
+            <li><a href="symps.php">Treatments</a></li>
             <li><a href="friends.php">Friends</a></li>
             <li><a href="search.php">Search</a></li>
             <li><a href="logout.php">Sign Out</a></li>
@@ -114,7 +114,7 @@ $c_friendships = $database->count("friendships");
 
       </div>
     </nav>
-                    <h3 class="text-muted">Empresta Miami</h3>
+                    <h3 class="text-muted">myMeds</h3>
               <br>
 
   </div>
