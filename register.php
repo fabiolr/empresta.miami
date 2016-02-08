@@ -53,9 +53,9 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="#about">Sobre</a></li>
-            <li><a href="#contact">Contato</a></li>
-            <li class="active"><a href="register.php">Registre-se</a></li>
+            <li><a href="about.php">About</a></li>
+            <li><a href="mailto:fabio@ribei.ro">Contact</a></li>
+            <li class="active"><a href="register.php">Sign up</a></li>
 
           </ul>
         </div><!--/.nav-collapse -->
@@ -68,7 +68,7 @@
 
       <div class="starter-template">
         <br>
-        <h1>Crie sua conta</h1>
+        <h1>Register</h1>
         <br>
 
       </div>
@@ -90,7 +90,7 @@
             <br>
        <div class="input-group">
               <span class="input-group-addon" id="basic-addon1"></span>
-              <input type="text" name="name" class="form-control" placeholder="Nome Completo" aria-describedby="basic-addon1">
+              <input type="text" name="name" class="form-control" placeholder="Full Name" aria-describedby="basic-addon1">
             </div>
             <br>
 
@@ -102,7 +102,7 @@
             <br>
 
             <button type="submit" class="btn btn-primary btn-md">
-            Registre-se
+            Create Account
             </button>
 
           </form>

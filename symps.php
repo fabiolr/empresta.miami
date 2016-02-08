@@ -44,43 +44,53 @@ require_once 'database.php';
 
 if ($_POST) {
 
-	if ($_POST['action'] == "new_med") {
+	if ($_POST['action'] == "new_self_med") {
 
-	$meds_id = $database->insert("meds",[
-	"active_ingredient" => $_POST['active_ingredient'],
-	"name" => $_POST['name'],
-	"med_types_id" => $_POST['med_id']
+    $self_med_id = $database->insert("self_medication",[
+    "added_by" => $_SESSION['user'],
+    "symptoms_id" => $_POST['symptom'],
+    "meds_id" => $_POST['med_id']
+    ]);
+  // echo "insrting description ". $_POST['description']."by: ".$_SESSION['name']." and symptoms_id: ".$syms_id." and medid: ".$_POST['med_id'];
 
-	]);
 	}
+
+  elseif ($_POST['action'] == "new_sym") {
+
+    $syms_id = $database->insert("symptoms",[
+    "description" => $_POST['description'],
+    "added_by" => $_SESSION['user']
+    ]);
+
+  }
+
 	elseif ($_POST['action'] == "new_type") {
 
-	$med_id = $database->insert("med_types",[
-		"type" => $_POST['type_name']
-		]);
+  	$med_id = $database->insert("med_types",[
+  		"type" => $_POST['type_name']
+  		]);
 
 	}
 
 
 }
+       
+  if ($_GET['del']) {
+    $deleted_rows = $database->delete("self_medication",
+    ["id" => $_GET['del']]);
+} 
+
+
 
 
 
 // query to display data
 
-$meds = $database->select("meds",[
-	"[><]med_types" => ["med_types_id" => "id"]
-	],[
-	"meds.id",
-	"active_ingredient",
-	"name",
-	"type"
-	],[
-	"LIMIT" => 50	
-	]);
+$syms = $database->query("select meds.name, meds.id, symptoms.description, symptoms.id, self_medication.id from (self_medication left join meds on self_medication.meds_id = meds.id) left join symptoms on self_medication.symptoms_id = symptoms.id where self_medication.added_by = " . $_SESSION['user'].";");
 
-$types = $database->select("med_types",["id","type"]);
+$meds = $database->select("meds",["id","name"]);
 
+$symptoms = $database->select("symptoms",["id","description"]);
 
 
 ?>
@@ -103,9 +113,9 @@ $types = $database->select("med_types",["id","type"]);
           <ul class="nav navbar-nav">
           	<li><a href="dashboard.php">Dash</a></li>
             <li><a href="about.php">About</a></li>
-            <li class="active"><a href="meds.php">Meds</a></li>
+            <li><a href="meds.php">Meds</a></li>
             <li><a href="mymeds.php">My Meds</a></li>
-            <li><a href="symps.php">Symptons</a></li>
+            <li class="active"><a href="symps.php">Symptons</a></li>
             <li><a href="friends.php">Friends</a></li>
             <li><a href="search.php">Search</a></li>
             <li><a href="logout.php">Sign Out</a></li>
@@ -127,52 +137,51 @@ $types = $database->select("med_types",["id","type"]);
 
 <div class="table-responsive">
 
-	<form action="meds.php" method="POST">
-			<input type="hidden" name="action" value="new_med">
+	<form action="symps.php" method="POST">
+			<input type="hidden" name="action" value="new_self_med">
 
 
 <div class="row">
-        <div class="col-md-4">
 
-        	<input type="text" name="name" class="form-control" placeholder="Commercial Name" aria-describedby="basic-addon1">
+        <div class="form-group form-group-sm">
+
+            <div class="col-md-4">
+
+            
+                <select name="symptom" class="form-control" id="sel1">
+                  <option>Symptom</option>
+                  <?php
+                  foreach ($symptoms as $symptom) {
+                  echo "<option value=\"".$symptom['id']."\">".$symptom['description']."</option>";
+                  }
+                  ?>
+                  </select>
+            </div>
+
+
+
+            <div class="col-md-4">
+
+
+    					  <select name="med_id" class="form-control" id="sel1">
+    					    <option>Medicine</option>
+    					    <?php
+    					    foreach ($meds as $med) {
+    					    echo "<option value=\"".$med['id']."\">".$med['name']."</option>";
+    					    }
+    					    ?>
+    				      </select>
+    		    </div>
+
+            <div class="col-md-4">
+          			<div class="input-group">
+          				<button class="btn btn-default" type="submit">Add</button>
+          			</div>
+    		    </div>
         </div>
+</div>
 
-        <div class="col-md-4">
-
-
-			<div class="form-group form-group-sm">
-					  <select  name="med_id" class="form-control" id="sel1">
-					    <option>Type</option>
-					    <?php
-					    foreach ($types as $type) {
-					    echo "<option value=\"".$type['id']."\">".$type['type']."</option>";
-					    }
-					    ?>
-				      </select>
-		    </div>
-		</div>
-
-        <div class="col-md-4">
-			<div class="input-group">
-				<input type="text" name="active_ingredient" class="form-control" placeholder="Active Ingredient" aria-describedby="basic-addon1">
-
-				<span class="input-group-btn">
-				<button class="btn btn-default" type="submit">Add</button>
-				</span> 
-			</div>
-		</div>
-
-
-      </div>
-
-	</form>
-
-
-
-                  		
-<!-- old text 
-
--->		
+  </form>
 
 
 </div>
@@ -192,13 +201,13 @@ $types = $database->select("med_types",["id","type"]);
               </thead>
               <tbody>
               	<?php
-              	foreach ($meds as $med) {
+              	foreach ($syms as $sym) {
               		echo "<tr>";
-              		echo "<td>".$med["name"]."</td>";
-					echo "<td>".$med["type"]."</td>";
-              		echo "<td>".$med["active_ingredient"]."</td>";
+              		echo "<td>".$sym[0]."</td>";
+					echo "<td>".$sym["type"]."</td>";
+              		echo "<td>".$sym[2]."</td>";
               		echo "<td>";
-              		echo "<a href=\"mymeds.php?have=".$med['id']."\">I Have this!</a>";	
+              		echo "<a href=\"symps.php?del=".$sym[4]."\">Del</a>";	
               		echo "</td>";
 					echo "</tr>";
               	}?>
@@ -206,10 +215,10 @@ $types = $database->select("med_types",["id","type"]);
             </table>
 
 
-	<form action="meds.php" method="POST">
-			<input type="hidden" name="action" value="new_type">
+	<form action="symps.php" method="POST">
+			<input type="hidden" name="action" value="new_sym">
 				<div class="input-group">
-				<input type="text" name="type_name" class="form-control" placeholder="New Med Type" aria-describedby="basic-addon1">
+				<input type="text" name="description" class="form-control" placeholder="New Symptom" aria-describedby="basic-addon1">
 				<span class="input-group-btn">
 				<button class="btn btn-default" type="submit">Add</button>
 				</span> 
@@ -218,7 +227,7 @@ $types = $database->select("med_types",["id","type"]);
 
 	</form>
 
-    </div><!-- /.container -->
+</div><!-- /.container -->
 
 
     <!-- Bootstrap core JavaScript

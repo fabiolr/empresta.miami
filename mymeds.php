@@ -73,6 +73,7 @@ if ($_GET) {
         "meds_id" => $_GET['have'],
         "user_id" => $_SESSION['user']
         ]);
+      // echo "<BR><BR>Just added med_id: ".$_GET['have']." for user: ".$_SESSION['user'];
     } 
 
         if ($_GET['plus']) {
@@ -137,7 +138,7 @@ $inventory = $database->select("inventory",[
   "dose",
   "need"
   ],[
-  "LIMIT" => 50 
+    "user_id" => $_SESSION['user']
   ]);
 
 

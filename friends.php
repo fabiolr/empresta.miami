@@ -73,11 +73,8 @@ if ($_POST) {
 
 <?php
 
-$c_users = $database->count("users");
-$c_meds = $database->count("meds");
-$c_symps = $database->count("symptoms");
-$c_self = $database->count("self_medication");
-$c_friendships = $database->count("friendships");
+
+
 
 ?>
 
@@ -98,12 +95,12 @@ $c_friendships = $database->count("friendships");
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="dashboard.php">Dash</a></li>
+            <li><a href="dashboard.php">Dash</a></li>
             <li><a href="about.php">About</a></li>
             <li><a href="meds.php">Meds</a></li>
             <li><a href="mymeds.php">My Meds</a></li>
             <li><a href="symps.php">Symptons</a></li>
-            <li><a href="friends.php">Friends</a></li>
+            <li class="active"><a href="friends.php">Friends</a></li>
             <li><a href="search.php">Search</a></li>
             <li><a href="logout.php">Sign Out</a></li>
 
@@ -114,62 +111,20 @@ $c_friendships = $database->count("friendships");
 
       </div>
     </nav>
-                    <h3 class="text-muted">Empresta Miami</h3>
+                <h3 class="text-muted">Empresta Miami</h3>
               <br>
 
   </div>
 
-  <div class="starter-template">
+      <div class="starter-template">
 
 
-      <div class="row">
-              <div class="col-md-4">
+        In Construction - Make friends and share meds.
 
 
-                    <ul class="list-group">
-                      <li class="list-group-item">
-                        <span class="badge"><?=$c_users?></span>
-                        Users
-                      </li>
-                      <li class="list-group-item">
-                        <span class="badge"><?=$c_meds?></span>
-                        Meds
-                      </li>
-                      <li class="list-group-item">
-                        <span class="badge"><?=$c_symps?></span>
-                        Symptoms
-                      </li>
-                      <li class="list-group-item">
-                        <span class="badge"><?=$c_self?></span>
-                        Uses
-                      </li>
-                      <li class="list-group-item">
-                        <span class="badge"><?=$c_friendships?></span>
-                        Friendships
-                      </li>
-                    </ul>
-              </div>
-
-              <div class="col-md-4">
-
-
-              </div>
-
-
-              <div class="col-md-4">
-
-
-
-              </div>
       </div>
 
-  </div>
-
-
-
-      
-
-</div><!-- /.container -->
+    </div><!-- /.container -->
 
 
     <!-- Bootstrap core JavaScript
