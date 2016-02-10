@@ -19,7 +19,9 @@
     <!-- Custom styles for this template -->
     <link href="starter-template.css" rel="stylesheet">
  
+ 
     <script  src="empresta.js"></script>
+    <script  src="jquery/jquery-2.2.0.min.js"></script>
     <script  src="bootstrap/js/bootstrap.min.js"></script>
 
   </head>
